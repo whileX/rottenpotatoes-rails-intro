@@ -9,11 +9,7 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
-  
-  # def find_header(header)
-  #   params[:sort] == header ? 'hilite' : nil
-  # end
-  # helper_method :find_header
+
   
   def index
     @all_ratings = Movie.ratings

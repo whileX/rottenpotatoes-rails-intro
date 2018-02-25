@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.ratings
     @movies = Movie.all
-    @ratings_hash = Hash[*@all_ratings.map {|key| [key, 1]}.flatten]
+    @hash_rate = Hash[*@all_ratings.map {|key| [key, 1]}.flatten]
     
     if (params[:session] == "clear")
       session[:sort] = nil
@@ -26,9 +26,9 @@ class MoviesController < ApplicationController
     end
     
     if (params[:ratings] != nil)
-      @ratings_hash = params[:ratings]
-      @movies = @movies.where(:rating => @ratings_hash.keys)
-      session[:ratings] = @ratings_hash
+      @hash_rate = params[:ratings]
+      @movies = @movies.where(:rating => @hash_rate.keys)
+      session[:ratings] = @hash_rate
     end
     
     if (params[:sort] != nil)
@@ -45,7 +45,7 @@ class MoviesController < ApplicationController
     end
     
     if (params[:sort] == nil || params[:ratings] == nil)
-      redirect_hash = (session[:ratings] != nil) ? Hash[*session[:ratings].keys.map {|key| ["ratings[#{key}]", 1]}.flatten] : { :ratings => @ratings_hash }
+      redirect_hash = (session[:ratings] != nil) ? Hash[*session[:ratings].keys.map {|key| ["ratings[#{key}]", 1]}.flatten] : { :ratings => @hash_rate }
       redirect_hash[:sort] = (session[:sort] != nil) ? session[:sort] : "none"
       redirect_to movies_path(redirect_hash) and return
     end
